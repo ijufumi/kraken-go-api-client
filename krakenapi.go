@@ -305,7 +305,7 @@ func (api *KrakenApi) AddOrder(pair string, direction string, orderType string, 
 }
 
 // TradesHistory
-func (api *KrakenApi) TradesHistory(args map[string]string) (interface{}, error) {
+func (api *KrakenApi) TradesHistory(args map[string]string) (*TradesHistoryResponse, error) {
 	params := url.Values{}
 	if value, ok := args["type"]; ok {
 		params.Add("type", value)
