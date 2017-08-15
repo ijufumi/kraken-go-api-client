@@ -304,6 +304,34 @@ func (api *KrakenApi) AddOrder(pair string, direction string, orderType string, 
 	return resp.(*AddOrderResponse), nil
 }
 
+// TradesHistory
+func (api *KrakenApi) TradesHistory(args map[string]string) (interface{}, error) {
+	params := url.Values{}
+	if value, ok := args["type"]; ok {
+		params.Add("type", value)
+	}
+	if value, ok := args["trades"]; ok {
+		params.Add("trades", value)
+	}
+	if value, ok := args["start"]; ok {
+		params.Add("start", value)
+	}
+	if value, ok := args["end"]; ok {
+		params.Add("end", value)
+	}
+	if value, ok := args["ofs"]; ok {
+		params.Add("ofs", value)
+	}
+
+	resp, err := api.queryPrivate("TradesHistory", params, &TradesHistoryResponse{})
+
+	if err != nil {
+		return nil, err
+	}
+
+	return resp.(*TradesHistoryResponse), nil
+}
+
 // Query sends a query to Kraken api for given method and parameters
 func (api *KrakenApi) Query(method string, data map[string]string) (interface{}, error) {
 	values := url.Values{}

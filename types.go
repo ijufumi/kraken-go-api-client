@@ -391,6 +391,24 @@ type Order struct {
 	Reason         string           `json:"reason"`
 }
 
+type Trade struct {
+	TransactionID  string           `json:"ordertxid"`
+	Pair           string           `json:"pair"`
+	Time           string           `json:"time"`
+	Type           string           `json:"type"`
+	OrderType      string           `json:"ordertype"`
+	Cost           float64          `json:"cost,string"`
+	Fee            float64          `json:"fee,string"`
+	Volume         string           `json:"vol"`
+	VolumeClosed   float64          `json:"vol_closed,string"`
+    Margin         float64          `json:"margin,string"`
+	Value          float64          `json:"value,string"`
+    Net            float64          `json:"net"`
+	Misc           string           `json:"misc"`
+	OrderFlags     string           `json:"oflags"`
+	Viqc           float64          `json:"viqc,string"`
+}
+
 // ClosedOrdersResponse represents a list of closed orders, indexed by id
 type ClosedOrdersResponse struct {
 	Closed map[string]Order `json:"closed"`
@@ -409,6 +427,11 @@ type AddOrderResponse struct {
 type CancelOrderResponse struct {
 	Count   int  `json:"count"`
 	Pending bool `json:"pending"`
+}
+
+type TradesHistoryResponse struct {
+	Trades map[string]Trade `json:"trades"`
+	Count  int              `json:"count"`
 }
 
 type QueryOrdersResponse map[string]Order
