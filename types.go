@@ -397,16 +397,14 @@ type Trade struct {
 	Time           string           `json:"time"`
 	Type           string           `json:"type"`
 	OrderType      string           `json:"ordertype"`
+	Price          float64          `json:"price"`
 	Cost           float64          `json:"cost,string"`
 	Fee            float64          `json:"fee,string"`
-	Volume         string           `json:"vol"`
-	VolumeClosed   float64          `json:"vol_closed,string"`
-    Margin         float64          `json:"margin,string"`
+	Volume         float64          `json:"vol,string"`
+	Margin         float64          `json:"margin,string"`
 	Value          float64          `json:"value,string"`
-    Net            float64          `json:"net"`
 	Misc           string           `json:"misc"`
-	OrderFlags     string           `json:"oflags"`
-	Viqc           float64          `json:"viqc,string"`
+	Closing        string           `json:"closing"`
 }
 
 // ClosedOrdersResponse represents a list of closed orders, indexed by id
