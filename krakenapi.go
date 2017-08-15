@@ -307,20 +307,13 @@ func (api *KrakenApi) AddOrder(pair string, direction string, orderType string, 
 // TradesHistory
 func (api *KrakenApi) TradesHistory(args map[string]string) (*TradesHistoryResponse, error) {
 	params := url.Values{}
-	if value, ok := args["type"]; ok {
-		params.Add("type", value)
-	}
-	if value, ok := args["trades"]; ok {
-		params.Add("trades", value)
-	}
-	if value, ok := args["start"]; ok {
-		params.Add("start", value)
-	}
-	if value, ok := args["end"]; ok {
-		params.Add("end", value)
-	}
-	if value, ok := args["ofs"]; ok {
-		params.Add("ofs", value)
+
+	paramKeys := []string{"type", "trades", "start", "end", "ofs"}
+
+	for _, v := range paramKeys {
+		if value, ok := args[v]; ok {
+			params.Add(v, value)
+		}
 	}
 
 	resp, err := api.queryPrivate("TradesHistory", params, &TradesHistoryResponse{})
