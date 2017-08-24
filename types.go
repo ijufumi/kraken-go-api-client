@@ -394,10 +394,10 @@ type Order struct {
 type Trade struct {
 	TransactionID  string           `json:"ordertxid"`
 	Pair           string           `json:"pair"`
-	Time           string           `json:"time"`
+	Time           float64          `json:"time"`
 	Type           string           `json:"type"`
 	OrderType      string           `json:"ordertype"`
-	Price          float64          `json:"price"`
+	Price          float64          `json:"price,string"`
 	Cost           float64          `json:"cost,string"`
 	Fee            float64          `json:"fee,string"`
 	Volume         float64          `json:"vol,string"`
