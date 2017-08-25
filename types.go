@@ -402,7 +402,6 @@ type Trade struct {
 	Fee            float64          `json:"fee,string"`
 	Volume         float64          `json:"vol,string"`
 	Margin         float64          `json:"margin,string"`
-	Value          float64          `json:"value,string"`
 	Misc           string           `json:"misc"`
 	Closing        string           `json:"closing"`
 }
