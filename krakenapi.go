@@ -58,6 +58,7 @@ type KrakenApi struct {
 	key    string
 	secret string
 	client *http.Client
+	debugLog bool
 }
 
 // New creates a new Kraken API client
@@ -66,7 +67,11 @@ func New(key, secret string) *KrakenApi {
 }
 
 func NewWithClient(key, secret string, httpClient *http.Client) *KrakenApi {
-	return &KrakenApi{key, secret, httpClient}
+	return &KrakenApi{key, secret, httpClient, false}
+}
+
+func (api *KrakenApi) SetEnableDebugLog(flag bool) {
+	api.debugLog = flag
 }
 
 // Time returns the server's time
@@ -360,7 +365,15 @@ func (api *KrakenApi) Query(method string, data map[string]string) (interface{},
 // Execute a public method query
 func (api *KrakenApi) queryPublic(method string, values url.Values, typ interface{}) (interface{}, error) {
 	url := fmt.Sprintf("%s/%s/public/%s", APIURL, APIVersion, method)
+	if api.debugLog {
+		req, _ := json.Marshal(values)
+		fmt.Println(fmt.Sprintf("Url:%v, Request:%v", url, string(req)))
+	}
 	resp, err := api.doRequest(url, values, nil, typ)
+	if api.debugLog {
+		res, _ := json.Marshal(resp)
+		fmt.Println(fmt.Sprintf("Response:%v", url, string(res)))
+	}
 
 	return resp, err
 }
@@ -381,7 +394,17 @@ func (api *KrakenApi) queryPrivate(method string, values url.Values, typ interfa
 		"API-Sign": signature,
 	}
 
+	if api.debugLog {
+		req, _ := json.Marshal(values)
+		fmt.Println(fmt.Sprintf("Url:%v, Request:%v", url, string(req)))
+	}
+
 	resp, err := api.doRequest(reqURL, values, headers, typ)
+
+	if api.debugLog {
+		res, _ := json.Marshal(resp)
+		fmt.Println(fmt.Sprintf("Response:%v", url, string(res)))
+	}
 
 	return resp, err
 }
