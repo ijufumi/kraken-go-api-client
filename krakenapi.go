@@ -414,15 +414,6 @@ func (api *KrakenApi) doRequest(reqURL string, values url.Values, headers map[st
 	// Execute request
 	resp, err := api.client.Do(req)
 
-	if api.debugLog {
-		res, _ := json.Marshal(resp)
-		fmt.Println(fmt.Sprintf("Response:%v", string(res)))
-		if err != nil {
-			res, _ = json.Marshal(err)
-			fmt.Println(fmt.Sprintf("Error:%v", string(res)))
-		}
-	}
-
 	if err != nil {
 		return nil, fmt.Errorf("Could not execute request! (%s)", err.Error())
 	}
@@ -432,6 +423,10 @@ func (api *KrakenApi) doRequest(reqURL string, values url.Values, headers map[st
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		return nil, fmt.Errorf("Could not execute request! (%s)", err.Error())
+	}
+
+	if api.debugLog {
+		fmt.Println(fmt.Sprintf("Response:%v", string(body)))
 	}
 
 	// Parse request
