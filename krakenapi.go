@@ -365,15 +365,8 @@ func (api *KrakenApi) Query(method string, data map[string]string) (interface{},
 // Execute a public method query
 func (api *KrakenApi) queryPublic(method string, values url.Values, typ interface{}) (interface{}, error) {
 	url := fmt.Sprintf("%s/%s/public/%s", APIURL, APIVersion, method)
-	if api.debugLog {
-		req, _ := json.Marshal(values)
-		fmt.Println(fmt.Sprintf("Url:%v, Request:%v", url, string(req)))
-	}
+
 	resp, err := api.doRequest(url, values, nil, typ)
-	if api.debugLog {
-		res, _ := json.Marshal(resp)
-		fmt.Println(fmt.Sprintf("Response:%v", url, string(res)))
-	}
 
 	return resp, err
 }
@@ -394,17 +387,7 @@ func (api *KrakenApi) queryPrivate(method string, values url.Values, typ interfa
 		"API-Sign": signature,
 	}
 
-	if api.debugLog {
-		req, _ := json.Marshal(values)
-		fmt.Println(fmt.Sprintf("Url:%v, Request:%v", url, string(req)))
-	}
-
 	resp, err := api.doRequest(reqURL, values, headers, typ)
-
-	if api.debugLog {
-		res, _ := json.Marshal(resp)
-		fmt.Println(fmt.Sprintf("Response:%v", url, string(res)))
-	}
 
 	return resp, err
 }
@@ -423,8 +406,19 @@ func (api *KrakenApi) doRequest(reqURL string, values url.Values, headers map[st
 		req.Header.Add(key, value)
 	}
 
+	if api.debugLog {
+		req, _ := json.Marshal(values)
+		fmt.Println(fmt.Sprintf("Url:%v, Request:%v", url, string(req)))
+	}
+
 	// Execute request
 	resp, err := api.client.Do(req)
+
+	if api.debugLog {
+		res, _ := json.Marshal(resp)
+		fmt.Println(fmt.Sprintf("Response:%v", string(res)))
+	}
+
 	if err != nil {
 		return nil, fmt.Errorf("Could not execute request! (%s)", err.Error())
 	}
