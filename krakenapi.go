@@ -417,6 +417,10 @@ func (api *KrakenApi) doRequest(reqURL string, values url.Values, headers map[st
 	if api.debugLog {
 		res, _ := json.Marshal(resp)
 		fmt.Println(fmt.Sprintf("Response:%v", string(res)))
+		if err != nil {
+			res, _ = json.Marshal(err)
+			fmt.Println(fmt.Sprintf("Error:%v", string(res)))
+		}
 	}
 
 	if err != nil {
