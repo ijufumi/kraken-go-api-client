@@ -408,7 +408,7 @@ func (api *KrakenApi) doRequest(reqURL string, values url.Values, headers map[st
 
 	if api.debugLog {
 		req, _ := json.Marshal(values)
-		fmt.Println(fmt.Sprintf("Url:%v, Request:%v", url, string(req)))
+		fmt.Println(fmt.Sprintf("Url:%v, Request:%v", reqURL, string(req)))
 	}
 
 	// Execute request
