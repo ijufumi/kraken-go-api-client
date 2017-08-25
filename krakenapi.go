@@ -325,6 +325,21 @@ func (api *KrakenApi) TradesHistory(args map[string]string) (*TradesHistoryRespo
 	return resp.(*TradesHistoryResponse), nil
 }
 
+// QueryTrades
+func (api *KrakenApi) QueryTrades(txid string, trades bool) (*QueryTradesResponse, error) {
+	params := url.Values{}
+	params.Add("txid", txid)
+	params.Add("trades", strconv.FormatBool(trades))
+
+	resp, err := api.queryPrivate("QueryTrades", params, &QueryTradesResponse{})
+
+	if err != nil {
+		return nil, err
+	}
+
+	return resp.(*QueryTradesResponse), nil
+}
+
 // Query sends a query to Kraken api for given method and parameters
 func (api *KrakenApi) Query(method string, data map[string]string) (interface{}, error) {
 	values := url.Values{}

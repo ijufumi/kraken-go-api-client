@@ -432,4 +432,8 @@ type TradesHistoryResponse struct {
 	Count  int              `json:"count"`
 }
 
+type QueryTradesResponse struct {
+	TradesHistoryResponse
+}
+
 type QueryOrdersResponse map[string]Order
