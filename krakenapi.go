@@ -58,7 +58,8 @@ type KrakenApi struct {
 	key    string
 	secret string
 	client *http.Client
-	debugLog bool
+	requestDebugType DebugType
+	responseDebugType DebugType
 }
 
 // New creates a new Kraken API client
@@ -67,11 +68,15 @@ func New(key, secret string) *KrakenApi {
 }
 
 func NewWithClient(key, secret string, httpClient *http.Client) *KrakenApi {
-	return &KrakenApi{key, secret, httpClient, false}
+	return &KrakenApi{key, secret, httpClient, NONE, NONE}
 }
 
-func (api *KrakenApi) SetEnableDebugLog(flag bool) {
-	api.debugLog = flag
+func (api *KrakenApi) SetRequestDebugType(debugType DebugType) {
+	api.requestDebugType = debugType
+}
+
+func (api *KrakenApi) SetResponseDebugType(debugType DebugType) {
+	api.responseDebugType = debugType
 }
 
 // Time returns the server's time
@@ -406,10 +411,12 @@ func (api *KrakenApi) doRequest(reqURL string, values url.Values, headers map[st
 		req.Header.Add(key, value)
 	}
 
-	if api.debugLog {
+	if api.requestDebugType != NONE {
 		req, _ := json.Marshal(values)
-		fmt.Println(fmt.Sprintf("[Request] Url:%v", reqURL))
-		fmt.Println(fmt.Sprintf("[Request] Header:%v", headers))
+		if api.requestDebugType == ALL {
+			fmt.Println(fmt.Sprintf("[Request] Url:%v", reqURL))
+			fmt.Println(fmt.Sprintf("[Request] Header:%v", headers))
+		}
 		fmt.Println(fmt.Sprintf("[Request] Body:%v", string(req)))
 	}
 
@@ -427,8 +434,10 @@ func (api *KrakenApi) doRequest(reqURL string, values url.Values, headers map[st
 		return nil, fmt.Errorf("Could not execute request! (%s)", err.Error())
 	}
 
-	if api.debugLog {
-		fmt.Println(fmt.Sprintf("[Response] Header:%v", resp.Header))
+	if api.responseDebugType != NONE {
+		if api.responseDebugType == ALL {
+			fmt.Println(fmt.Sprintf("[Response] Header:%v", resp.Header))
+		}
 		fmt.Println(fmt.Sprintf("[Response] Body:%v", string(body)))
 	}
 

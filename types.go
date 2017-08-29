@@ -63,6 +63,15 @@ const (
 	LIMIT  = "limit"
 )
 
+type DebugType int
+
+const (
+	NONE DebugType = iota
+	BODY_ONLY
+	ALL
+)
+
+
 // KrakenResponse wraps the Kraken API JSON response
 type KrakenResponse struct {
 	Error  []string    `json:"error"`
