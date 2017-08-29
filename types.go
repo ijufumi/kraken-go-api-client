@@ -71,6 +71,18 @@ const (
 	ALL
 )
 
+func (d DebugType) String() string {
+	switch d {
+		case NONE:
+			return "NONE"
+		case BODY_ONLY:
+			return "BODY_ONLY"
+		case ALL:
+			return "ALL"
+	}
+
+	return "UNKNOWN"
+}
 
 // KrakenResponse wraps the Kraken API JSON response
 type KrakenResponse struct {
