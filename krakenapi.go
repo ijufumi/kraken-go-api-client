@@ -55,11 +55,16 @@ var privateMethods = []string{
 
 // KrakenApi represents a Kraken API Client connection
 type KrakenApi struct {
+	url    string
 	key    string
 	secret string
 	client *http.Client
 	requestDebugType DebugType
 	responseDebugType DebugType
+}
+
+func (api KrakenApi) String() string {
+	return fmt.Sprintf("Url:%v, RequestDebugType:%v, ResponseDebugType:%v", api.url, api.requestDebugType, api.responseDebugType)
 }
 
 // New creates a new Kraken API client
@@ -68,7 +73,17 @@ func New(key, secret string) *KrakenApi {
 }
 
 func NewWithClient(key, secret string, httpClient *http.Client) *KrakenApi {
-	return &KrakenApi{key, secret, httpClient, NONE, NONE}
+	return &KrakenApi{
+		url: APIURL,
+		key: key,
+		secret: secret,
+		client: httpClient,
+		requestDebugType: NONE,
+		responseDebugType: NONE}
+}
+
+func (api *KrakenApi) SetApiUrl(url string) {
+	api.url = url
 }
 
 func (api *KrakenApi) SetRequestDebugType(debugType DebugType) {
@@ -369,7 +384,7 @@ func (api *KrakenApi) Query(method string, data map[string]string) (interface{},
 
 // Execute a public method query
 func (api *KrakenApi) queryPublic(method string, values url.Values, typ interface{}) (interface{}, error) {
-	url := fmt.Sprintf("%s/%s/public/%s", APIURL, APIVersion, method)
+	url := fmt.Sprintf("%s/%s/public/%s", api.url, APIVersion, method)
 
 	resp, err := api.doRequest(url, values, nil, typ)
 
@@ -379,7 +394,7 @@ func (api *KrakenApi) queryPublic(method string, values url.Values, typ interfac
 // queryPrivate executes a private method query
 func (api *KrakenApi) queryPrivate(method string, values url.Values, typ interface{}) (interface{}, error) {
 	urlPath := fmt.Sprintf("/%s/private/%s", APIVersion, method)
-	reqURL := fmt.Sprintf("%s%s", APIURL, urlPath)
+	reqURL := fmt.Sprintf("%s%s", api.url, urlPath)
 	secret, _ := base64.StdEncoding.DecodeString(api.secret)
 	values.Set("nonce", fmt.Sprintf("%d", time.Now().UnixNano()))
 
