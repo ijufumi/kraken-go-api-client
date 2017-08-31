@@ -427,12 +427,11 @@ func (api *KrakenApi) doRequest(reqURL string, values url.Values, headers map[st
 	}
 
 	if api.requestDebugType != NONE {
-		req, _ := json.Marshal(values)
 		if api.requestDebugType == ALL {
 			fmt.Println(fmt.Sprintf("[Request] Url:%v", reqURL))
 			fmt.Println(fmt.Sprintf("[Request] Header:%v", headers))
 		}
-		fmt.Println(fmt.Sprintf("[Request] Body:%v", string(req)))
+		fmt.Println(fmt.Sprintf("[Request] Body:%v", values.Encode()))
 	}
 
 	// Execute request
