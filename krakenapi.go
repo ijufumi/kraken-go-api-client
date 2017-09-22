@@ -418,7 +418,7 @@ func (api *KrakenApi) doRequest(reqURL string, values url.Values, headers map[st
 	// Create request
 	req, err := http.NewRequest("POST", reqURL, strings.NewReader(values.Encode()))
 	if err != nil {
-		return nil, fmt.Errorf("Could not execute request! (%s)", err.Error())
+		return nil, fmt.Errorf("[%v] Could not execute request! (%s)", ERROR_INITIALIZE_REQUEST, err.Error())
 	}
 
 	req.Header.Add("User-Agent", APIUserAgent)
@@ -438,14 +438,14 @@ func (api *KrakenApi) doRequest(reqURL string, values url.Values, headers map[st
 	resp, err := api.client.Do(req)
 
 	if err != nil {
-		return nil, fmt.Errorf("Could not execute request! (%s)", err.Error())
+		return nil, fmt.Errorf("[%v] Could not execute request! (%s)", ERROR_EXECUTE_REQUEST, err.Error())
 	}
 	defer resp.Body.Close()
 
 	// Read request
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		return nil, fmt.Errorf("Could not execute request! (%s)", err.Error())
+		return nil, fmt.Errorf("[%v] Could not execute request! (%s)", ERROR_READ_RESPONSE_BODY, err.Error())
 	}
 
 	if api.responseDebugType != NONE {
@@ -466,12 +466,12 @@ func (api *KrakenApi) doRequest(reqURL string, values url.Values, headers map[st
 
 	err = json.Unmarshal(body, &jsonData)
 	if err != nil {
-		return nil, fmt.Errorf("Could not execute request! (%s)", err.Error())
+		return nil, fmt.Errorf("[%v] Could not execute request! (%s)", ERROR_UNMARSHAL_RESPONSE, err.Error())
 	}
 
 	// Check for Kraken API error
 	if len(jsonData.Error) > 0 {
-		return nil, fmt.Errorf("Could not execute request! (%s)", jsonData.Error)
+		return nil, fmt.Errorf("[%v] Could not execute request! (%s)", ERROR_EXECUTE_API, jsonData.Error)
 	}
 
 	return jsonData.Result, nil

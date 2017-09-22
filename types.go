@@ -1,6 +1,14 @@
 package krakenapi
 
 const (
+	ERROR_INITIALIZE_REQUEST = "Initialize Request"
+	ERROR_EXECUTE_REQUEST    = "Execute Request"
+	ERROR_READ_RESPONSE_BODY = "Read Response"
+	ERROR_UNMARSHAL_RESPONSE = "Unmarshal Response"
+	ERROR_EXECUTE_API        = "Execute API"
+)
+
+const (
 	DASHEUR  = "DASHEUR"
 	DASHUSD  = "DASHUSD"
 	DASHXBT  = "DASHXBT"
@@ -76,12 +84,12 @@ const (
 
 func (d DebugType) String() string {
 	switch d {
-		case NONE:
-			return "NONE"
-		case BODY_ONLY:
-			return "BODY_ONLY"
-		case ALL:
-			return "ALL"
+	case NONE:
+		return "NONE"
+	case BODY_ONLY:
+		return "BODY_ONLY"
+	case ALL:
+		return "ALL"
 	}
 
 	return "UNKNOWN"
@@ -416,18 +424,18 @@ type Order struct {
 }
 
 type Trade struct {
-	TransactionID  string           `json:"ordertxid"`
-	Pair           string           `json:"pair"`
-	Time           float64          `json:"time"`
-	Type           string           `json:"type"`
-	OrderType      string           `json:"ordertype"`
-	Price          float64          `json:"price,string"`
-	Cost           float64          `json:"cost,string"`
-	Fee            float64          `json:"fee,string"`
-	Volume         float64          `json:"vol,string"`
-	Margin         float64          `json:"margin,string"`
-	Misc           string           `json:"misc"`
-	Closing        string           `json:"closing"`
+	TransactionID string  `json:"ordertxid"`
+	Pair          string  `json:"pair"`
+	Time          float64 `json:"time"`
+	Type          string  `json:"type"`
+	OrderType     string  `json:"ordertype"`
+	Price         float64 `json:"price,string"`
+	Cost          float64 `json:"cost,string"`
+	Fee           float64 `json:"fee,string"`
+	Volume        float64 `json:"vol,string"`
+	Margin        float64 `json:"margin,string"`
+	Misc          string  `json:"misc"`
+	Closing       string  `json:"closing"`
 }
 
 // ClosedOrdersResponse represents a list of closed orders, indexed by id
