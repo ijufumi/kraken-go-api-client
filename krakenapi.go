@@ -466,7 +466,7 @@ func (api *KrakenApi) doRequest(reqURL string, values url.Values, headers map[st
 
 	err = json.Unmarshal(body, &jsonData)
 	if err != nil {
-		return nil, fmt.Errorf("[%v] Could not execute request! (%s)", ERROR_UNMARSHAL_RESPONSE, err.Error())
+		return nil, fmt.Errorf("[%v] Could not execute request! (%s) body[%v]", ERROR_UNMARSHAL_RESPONSE, err.Error(), string(body))
 	}
 
 	// Check for Kraken API error
